@@ -1,16 +1,18 @@
-from collection import google_news, html_loading
+from collection.dataset import NewsDatasetCollector
+
 
 if __name__ == '__main__':
-    # [{'topic': ...,
-    #   'language': ...,
-    #   'news': [{'title': ..., 'link': ..., 'name': ...}, ...]
-    #   }, ...]
-    news_headlines = google_news.collect_from_file('data/news_topics.csv',
-                                                   output_file='data/news_mapping.json')
+    financial_crime_topics = ['fraud', 'money-laundering', 'scam', 'financial crime', 'offshore',
+                              'bribe', 'panama papers', 'bankrupt', 'mismanagement',
+                              'pandora paper', 'mossack fonseca', 'corruption', 'tax evasion',
+                              'hiding wealth', 'tax cheat', 'shell company',
+                              'british virgin islands']
+    financial_news_sites = ['theguardian.com']  # 'bbc.com','reuters.com', 'theguardian.com']
 
-    filenames, links = zip(*[(f"{news['name']}.html", news['link'])
-                             for topic in news_headlines
-                             for news in topic['news']])
-    html_loading.load_and_save_from_list(links, filenames, 'data/news')
-
-
+    ndc = NewsDatasetCollector()
+    ndc.collect_news(topics=financial_crime_topics,
+                     sites=financial_news_sites,
+                     reset=False,
+                     num_samples=40)
+    ndc.parse_text()
+    ndc.to_csv()

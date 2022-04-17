@@ -1,0 +1,5 @@
+requests~=2.24.0
+pandas~=1.4.2
+tqdm~=4.64.0
+pygooglenews~=0.1.2
+newspaper3k~=0.2.8
